@@ -1,6 +1,6 @@
 # _ContextGS_: Compact 3D Gaussian Splatting with Anchor Level Context Model
 
-Welcome! The official implementation of the paper "[ContextGS: Compact 3D Gaussian Splatting with Anchor Level Context Model](./assets/ContextGS.pdf)" will be released here soon!
+Welcome! The official implementation of the paper "[ContextGS: Compact 3D Gaussian Splatting with Anchor Level Context Model](https://arxiv.org/pdf/2405.20721)" will be released here soon!
 
 [Yufei Wang](https://wyf0912.github.io/), [Zhihao Li](https://scholar.google.com/citations?user=gWlYsj0AAAAJ&hl=en), [Lanqing Guo](https://guolanqing.github.io/), [Wenhan Yang](https://flyywh.github.io/), [Alex C. Kot](https://personal.ntu.edu.sg/eackot/), [Bihan Wen](https://personal.ntu.edu.sg/bihan.wen/)
 
@@ -22,6 +22,12 @@ The code will be released soon.
 ## :star: Citation
 Please cite our paper if you find our work useful. Thanks! 
 ```
+@article{wang2024contextgs,
+  title={ContextGS: Compact 3D Gaussian Splatting with Anchor Level Context Model},
+  author={Wang, Yufei and Li, Zhihao and Guo, Lanqing and Yang, Wenhan and Kot, Alex C and Wen, Bihan},
+  journal={arXiv preprint arXiv:2405.20721},
+  year={2024}
+}
 
 ```
 
