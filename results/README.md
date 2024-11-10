@@ -1,0 +1,1 @@
+Results formatted as requested by 3DGS.zip, which are only for reference.
