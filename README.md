@@ -13,23 +13,121 @@ We divide anchors into levels as shown in Fig.(b) and the anchors from coarser l
 ## :rocket: Performance
 Compared with Scaffold-GS, we achieve better rendering qualities, faster rendering speed, and great size reduction of up to $15$ times averaged over all datasets we used.
 
-![performance](image.png)
+![performance](assets/image.png)
 
 ## :fire: Train/Evaluation
 
-The code will be released soon.
+### Installation
+
+1. Unzip files
+```
+cd submodules
+unzip diff-gaussian-rasterization.zip
+unzip simple-knn.zip
+cd ..
+```
+2. Install environment
+```
+conda env create --file environment.yml
+# or `sh setup_env.sh` # tested on CUDA 11.8
+conda activate contextgs
+```
+
+### Data
+
+First, create a ```data/``` folder inside the project path by 
+```
+mkdir data
+```
+
+The data structure will be organised as follows:
+
+```
+data/
+├── dataset_name
+│   ├── scene1/
+│   │   ├── images
+│   │   │   ├── IMG_0.jpg
+│   │   │   ├── IMG_1.jpg
+│   │   │   ├── ...
+│   │   ├── sparse/
+│   │       └──0/
+│   ├── scene2/
+│   │   ├── images
+│   │   │   ├── IMG_0.jpg
+│   │   │   ├── IMG_1.jpg
+│   │   │   ├── ...
+│   │   ├── sparse/
+│   │       └──0/
+...
+```
+
+ - For instance: `./data/blending/drjohnson/`
+ - For instance: `./data/bungeenerf/amsterdam/`
+ - For instance: `./data/mipnerf360/bicycle/`
+ - For instance: `./data/nerf_synthetic/chair/`
+ - For instance: `./data/tandt/train/`
+
+
+### Public Data (We follow suggestions from [Scaffold-GS](https://github.com/city-super/Scaffold-GS))
+
+ - The **BungeeNeRF** dataset is available in [Google Drive](https://drive.google.com/file/d/1nBLcf9Jrr6sdxKa1Hbd47IArQQ_X8lww/view?usp=sharing)/[百度网盘[提取码:4whv]](https://pan.baidu.com/s/1AUYUJojhhICSKO2JrmOnCA). 
+ - The **MipNeRF360** scenes are provided by the paper author [here](https://jonbarron.info/mipnerf360/). And we test on its entire 9 scenes ```bicycle, bonsai, counter, garden, kitchen, room, stump, flowers, treehill```. 
+ - The SfM datasets for **Tanks&Temples** and **Deep Blending** are hosted by 3D-Gaussian-Splatting [here](https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/datasets/input/tandt_db.zip). Download and uncompress them into the ```data/``` folder.
+
+### Custom Data
+
+For custom data, you should process the image sequences with [Colmap](https://colmap.github.io/) to obtain the SfM points and camera poses. Then, place the results into ```data/``` folder.
+
+### Training
+
+To train scenes, we provide the following training scripts in `./scripts`: 
+ - Tanks&Temples: ```run_shell_tnt.py```
+ - MipNeRF360: ```run_shell_mip360.py```
+ - BungeeNeRF: ```run_shell_bungee.py```
+ - Deep Blending: ```run_shell_db.py```
+
+ run them with 
+ ```
+ python run_shell_xxx.py
+ ```
+
+The code will automatically run the entire process of: **training, encoding, decoding, testing**.
+ - Training log will be recorded in `output.log` of the output directory. Results of **detailed fidelity, detailed size, detailed time** will all be recorded
+ - Encoded bitstreams will be stored in `./bitstreams` of the output directory.
+ - Evaluated output images will be saved in `./test/ours_30000/renders` of the output directory.
+ - Optionally, you can change `lmbda` in these `run_shell_xxx.py` scripts to try variable bitrate.
+ - **After training, the original model `point_cloud.ply` is losslessly compressed as `./bitstreams`. You should refer to `./bitstreams` to get the final model size, but not `point_cloud.ply`. You can even delete `point_cloud.ply` if you like :).**
+
+### Decompress from binary files
+You can use the following command to decompress from the binary files:
+```bash
+python3 decompress.py 
+  -s 'scene path to calucalte the metrics'
+  --eval
+  --lod '[int] level of detail'
+  -m 'output path'
+  --voxel_size '[float] voxel size used to train the model'
+```
 
 ## :star: Citation
 Please cite our paper if you find our work useful. Thanks! 
 ```
-@article{wang2024contextgs,
-  title={ContextGS: Compact 3D Gaussian Splatting with Anchor Level Context Model},
-  author={Wang, Yufei and Li, Zhihao and Guo, Lanqing and Yang, Wenhan and Kot, Alex C and Wen, Bihan},
-  journal={arXiv preprint arXiv:2405.20721},
-  year={2024}
+@inproceedings{
+wang2024contextgs,
+title={Context{GS} : Compact 3D Gaussian Splatting with Anchor Level Context Model},
+author={Yufei Wang and Zhihao Li and Lanqing Guo and Wenhan Yang and Alex Kot and Bihan Wen},
+booktitle={The Thirty-eighth Annual Conference on Neural Information Processing Systems},
+year={2024},
+url={https://openreview.net/forum?id=W2qGSMl2Uu}
 }
 
 ```
 
 ## :email: Contact
 If you have any questions, please feel free to contact me via `yufei001@ntu.edu.sg`.
+
+
+## Acknowledgement
+
+ - We thank all authors from [HAC](https://github.com/https://github.com/YihangChen-ee/HAC), [Scaffold-GS](https://github.com/city-super/Scaffold-GS), [3D-GS](https://github.com/graphdeco-inria/gaussian-splatting) for excellent works.

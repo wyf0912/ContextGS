@@ -1,0 +1,11 @@
+submodules/*
+*.pyc
+data/*
+outputs/*
+wandb/*
+torch_scatter-2.0.9-cp39-cp39-linux_x86_64.whl
+results.csv
+data
+outputs
+*.pt
+.DS_Store
